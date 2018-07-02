@@ -40,6 +40,15 @@ docker-compose exec db mysql -uroot -p"root"
 docker stats
 ```
 
+#### Docker multiple machines ####
+```bash
+docker-machine create --driver virtualbox dev1 
+@FOR /f "tokens=*" %i IN ('docker-machine env dev1') DO @%i
+
+docker-machine create --driver virtualbox dev2 
+@FOR /f "tokens=*" %i IN ('docker-machine env dev2') DO @%i
+```
+
 # Sources #
 <https://github.com/maxpou/docker-symfony>
 
@@ -58,3 +67,5 @@ docker stats
 <https://blog.codeship.com/using-docker-compose-for-php-development/>
 
 <http://geekyplatypus.com/dockerise-your-php-application-with-nginx-and-php7-fpm>
+
+<https://blog.codeship.com/docker-machine-compose-and-swarm-how-they-work-together/>
