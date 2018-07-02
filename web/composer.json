@@ -1,0 +1,11 @@
+{
+    "name": "vendor/name",
+    "description": "description",
+    "authors": [
+        {
+            "name": "firstn lastn",
+            "email": "email@domain.com"
+        }
+    ],
+    "require": {}
+}

@@ -1,0 +1,54 @@
+version: "3"
+services:
+  web:
+    image: nginx:stable
+    container_name: web
+    volumes:
+      - "./web:/var/www/html"
+      - "./etc/nginx/default.template:/etc/nginx/conf.d/default.template"
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      - NGINX_HOST=${NGINX_HOST}
+      - NGINX_PORT=80
+    command: /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
+    depends_on:
+      - php
+      - db
+      - composer
+      - node
+  composer:
+      image: "composer:1.6.5"
+      container_name: composer
+      volumes:
+          - "./web:/app"
+      command: 'true'
+  node:
+        image: "node:8.11.3"
+        container_name: node
+        working_dir: /home/node/app
+        volumes:
+            - "./web/:/home/node/app"
+  php:
+    image: php:7-fpm
+    container_name: php
+    restart: always
+    volumes:
+      - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
+      - "./web:/var/www/html"
+  db:
+      image: mysql:${MYSQL_VERSION}
+      container_name: ${MYSQL_HOST}
+      restart: always
+      environment:
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+  adminer:
+      image: adminer
+      container_name: adminer
+      restart: always
+      ports:
+        - 8100:8080
