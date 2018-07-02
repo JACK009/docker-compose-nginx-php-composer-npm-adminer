@@ -28,10 +28,6 @@ docker-compose run node npm install jquery
 #### Symfony ####
 ```bash
 docker-compose exec php php /var/www/symfony/bin/console cache:clear
-
-# Same command by using alias
-docker-compose exec php bash
-sf cache:clear
 ```
 
 #### MySQL ####
@@ -41,7 +37,7 @@ docker-compose exec db mysql -uroot -p"root"
 
 #### Check CPU consumption ####
 ```bash
-docker stats $(docker inspect -f "{{ .Name }}" $(docker ps -q))
+docker stats
 ```
 
 # Sources #
